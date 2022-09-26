@@ -1,9 +1,11 @@
 package se.miun.distsys.messages;
 
+import java.net.InetAddress;
+import java.util.Random;
+
 public class JoinMessage extends Message {
     private String messageBody;
     private String username;
-
     public String getUsername() {
         return username;
     }
