@@ -4,6 +4,8 @@ import javax.swing.*;
 
 import se.miun.distsys.GroupCommuncation;
 import se.miun.distsys.listeners.ChatMessageListener;
+import se.miun.distsys.listeners.JoinMessageListener;
+import se.miun.distsys.listeners.LeaveMessageListener;
 import se.miun.distsys.messages.ChatMessage;
 import se.miun.distsys.messages.JoinMessage;
 import se.miun.distsys.messages.LeaveMessage;
@@ -15,7 +17,7 @@ import java.util.Scanner;
 
 //Skeleton code for Distributed systems
 
-public class WindowProgram implements ChatMessageListener, ActionListener {
+public class WindowProgram implements ChatMessageListener, JoinMessageListener, LeaveMessageListener, ActionListener {
 
 	JFrame frame;
 	JTextPane txtpnChat = new JTextPane();
@@ -39,10 +41,12 @@ public class WindowProgram implements ChatMessageListener, ActionListener {
 	}
 
 	public WindowProgram() {
-		initializeUsername();
+		gc = new GroupCommuncation();
 
-		gc = new GroupCommuncation();		
+		initializeUsername();
 		gc.setChatMessageListener(this);
+		gc.setJoinMessageListener(this);
+		gc.setLeavenMessageListener(this);
 		System.out.println("Group Communcation Started");
 	}
 
@@ -58,6 +62,7 @@ public class WindowProgram implements ChatMessageListener, ActionListener {
 				throw new RuntimeException(e);
 			}
 		}
+		gc.sendJoinMessage(username);
 		System.out.println(username);
 		initializeChat();
 	}

@@ -65,6 +65,7 @@ public class GroupCommuncation {
 				
 		private void handleMessage (Message message) {
 			if(message instanceof JoinMessage){
+				JoinMessage joinMessage = (JoinMessage) message;
 				friendList.add(((JoinMessage) message).getUsername());
 				System.out.println("Friendlist contains");
 				for(String user : friendList){
