@@ -20,6 +20,7 @@ public class Program implements ChatMessageListener{
 	public Program() {
 		gc = new GroupCommuncation();		
 		gc.setChatMessageListener(this);
+		//gc.setJoinMessageListener(this);
 		System.out.println("Group Communcation Started");
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));		

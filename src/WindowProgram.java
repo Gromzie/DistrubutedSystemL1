@@ -6,6 +6,7 @@ import se.miun.distsys.GroupCommuncation;
 import se.miun.distsys.listeners.ChatMessageListener;
 import se.miun.distsys.messages.ChatMessage;
 import se.miun.distsys.messages.JoinMessage;
+import se.miun.distsys.messages.LeaveMessage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -80,6 +81,11 @@ public class WindowProgram implements ChatMessageListener, ActionListener {
 		txtpnMessage.setText("Message");
 		frame.getContentPane().add(txtpnMessage);
 
+		JScrollPane scrollPaneUsers = new JScrollPane();
+		frame.getContentPane().add(scrollPaneUsers);
+		scrollPaneUsers.setViewportView(txtpnUsers);
+		txtpnUsers.setEditable(false);
+		txtpnUsers.setText(username);
 
 		JButton btnSendChatMessage = new JButton("Send Chat Message");
 		btnSendChatMessage.addActionListener(this);
@@ -87,12 +93,11 @@ public class WindowProgram implements ChatMessageListener, ActionListener {
 
 		frame.getContentPane().add(btnSendChatMessage);
 
-		txtpnUsers.setText("Active chat users");
-		txtpnUsers.setVisible(true);
-		txtpnUsers.setEditable(false);
+
 
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
+				gc.SendLeaveMessage(username);
 				gc.shutdown();
 			}
 		});
@@ -104,9 +109,27 @@ public class WindowProgram implements ChatMessageListener, ActionListener {
 			gc.sendChatMessage(username + ": " + txtpnMessage.getText());
 		}
 	}
+
 	
 	@Override
 	public void onIncomingChatMessage(ChatMessage chatMessage) {	
 		txtpnChat.setText(chatMessage.chat + "\n" + txtpnChat.getText());				
 	}
+	@Override
+	public void onIncomingJoinMessage(JoinMessage joinMessage) {
+		txtpnChat.setText(joinMessage.getMessageBody() + "\n" + txtpnChat.getText());
+		gc.sendCurrentUserMessage(username);
+		userlist.add(joinMessage.getUsername());
+		txtpnUsers.setText("");
+		for(String user : userlist){
+			txtpnUsers.setText(user + "\n" + txtpnUsers.getText());
+		}
+	}
+
+	@Override
+	public void onIncomingLeaveMessage(LeaveMessage leaveMessage) {
+		txtpnChat.setText(leaveMessage.getLeaveMessage() + "\n" + txtpnChat.getText());
+	}
+
+
 }

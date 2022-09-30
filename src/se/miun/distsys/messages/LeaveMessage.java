@@ -11,10 +11,6 @@ public class LeaveMessage extends Message{
         return leaveMessage;
     }
 
-    public void setLeaveMessage(String leaveMessage) {
-        this.leaveMessage = leaveMessage;
-    }
-
     private String leaveMessage;
 
     private String leaveText = " has left the chat.";
