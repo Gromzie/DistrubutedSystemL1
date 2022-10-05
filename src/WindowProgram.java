@@ -4,26 +4,33 @@ import javax.swing.*;
 
 import se.miun.distsys.GroupCommuncation;
 import se.miun.distsys.listeners.ChatMessageListener;
+import se.miun.distsys.listeners.FriendListListener;
 import se.miun.distsys.listeners.JoinMessageListener;
 import se.miun.distsys.listeners.LeaveMessageListener;
 import se.miun.distsys.messages.ChatMessage;
+import se.miun.distsys.messages.FriendList;
 import se.miun.distsys.messages.JoinMessage;
 import se.miun.distsys.messages.LeaveMessage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Scanner;
 
 //Skeleton code for Distributed systems
 
-public class WindowProgram implements ChatMessageListener, JoinMessageListener, LeaveMessageListener, ActionListener {
+public class WindowProgram implements ChatMessageListener, JoinMessageListener, LeaveMessageListener, FriendListListener, ActionListener {
 
 	JFrame frame;
+
 	JTextPane txtpnChat = new JTextPane();
 	JTextPane txtpnMessage = new JTextPane();
 	JTextPane txtpnUsers = new JTextPane();
 	String username = "";
+	List<String> userList = new ArrayList();
 
 	GroupCommuncation gc = null;	
 
@@ -44,6 +51,7 @@ public class WindowProgram implements ChatMessageListener, JoinMessageListener, 
 		gc = new GroupCommuncation();
 
 		initializeUsername();
+		gc.setFriendListListener(null);
 		gc.setChatMessageListener(this);
 		gc.setJoinMessageListener(this);
 		gc.setLeavenMessageListener(this);
@@ -62,6 +70,7 @@ public class WindowProgram implements ChatMessageListener, JoinMessageListener, 
 				throw new RuntimeException(e);
 			}
 		}
+		gc.setFriendListListener(this);
 		gc.sendJoinMessage(username);
 		System.out.println(username);
 		initializeChat();
@@ -89,16 +98,15 @@ public class WindowProgram implements ChatMessageListener, JoinMessageListener, 
 		JScrollPane scrollPaneUsers = new JScrollPane();
 		frame.getContentPane().add(scrollPaneUsers);
 		scrollPaneUsers.setViewportView(txtpnUsers);
+		userList.add(username);
 		txtpnUsers.setEditable(false);
-		txtpnUsers.setText(username);
+		txtpnUsers.setText(username + "\n" + txtpnUsers.getText());
 
 		JButton btnSendChatMessage = new JButton("Send Chat Message");
 		btnSendChatMessage.addActionListener(this);
 		btnSendChatMessage.setActionCommand("send");
 
 		frame.getContentPane().add(btnSendChatMessage);
-
-
 
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(WindowEvent winEvt) {
@@ -121,12 +129,20 @@ public class WindowProgram implements ChatMessageListener, JoinMessageListener, 
 		txtpnChat.setText(chatMessage.chat + "\n" + txtpnChat.getText());				
 	}
 	@Override
+	public void onIncomingFriendListMessage(FriendList friendList) {
+		userList.add(friendList.getUsername());
+		txtpnUsers.setText("");
+		for(String user : userList){
+			txtpnUsers.setText(user + "\n" + txtpnUsers.getText());
+		}
+	}
+	@Override
 	public void onIncomingJoinMessage(JoinMessage joinMessage) {
 		txtpnChat.setText(joinMessage.getMessageBody() + "\n" + txtpnChat.getText());
-		gc.sendCurrentUserMessage(username);
-		userlist.add(joinMessage.getUsername());
+		gc.sendFriendListMessage(username);
+		userList.add(joinMessage.getUsername());
 		txtpnUsers.setText("");
-		for(String user : userlist){
+		for(String user : userList){
 			txtpnUsers.setText(user + "\n" + txtpnUsers.getText());
 		}
 	}
@@ -134,7 +150,16 @@ public class WindowProgram implements ChatMessageListener, JoinMessageListener, 
 	@Override
 	public void onIncomingLeaveMessage(LeaveMessage leaveMessage) {
 		txtpnChat.setText(leaveMessage.getLeaveMessage() + "\n" + txtpnChat.getText());
+		userList.remove(leaveMessage.getUsername());
+		for(ListIterator<String> it = userList.listIterator(); it.hasNext();){
+			String value = it.next();
+			if(value.equals(leaveMessage.getUsername())) {
+				it.remove();
+			}
+		}
+		txtpnUsers.setText("");
+		for(String user : userList){
+			txtpnUsers.setText(user + "\n" + txtpnUsers.getText());
+		}
 	}
-
-
 }

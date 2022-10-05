@@ -2,6 +2,7 @@ package se.miun.distsys.messages;
 public class JoinMessage extends Message {
     private String messageBody;
     private String username;
+
     public String getUsername() {
         return username;
     }

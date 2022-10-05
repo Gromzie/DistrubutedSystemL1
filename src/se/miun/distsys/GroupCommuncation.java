@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import se.miun.distsys.listeners.ChatMessageListener;
+import se.miun.distsys.listeners.FriendListListener;
 import se.miun.distsys.listeners.JoinMessageListener;
 import se.miun.distsys.listeners.LeaveMessageListener;
 import se.miun.distsys.messages.*;
@@ -19,12 +20,13 @@ public class GroupCommuncation {
 	DatagramSocket datagramSocket = null;	
 	boolean runGroupCommuncation = true;	
 	MessageSerializer messageSerializer = new MessageSerializer();
-	List<String> friendList = new ArrayList();
+	List<String> friendList_ = new ArrayList();
 	
 	//Listeners
 	ChatMessageListener chatMessageListener = null;
 	JoinMessageListener joinMessageListener = null;
 	LeaveMessageListener leaveMessageListener = null;
+	FriendListListener friendListListener = null;
 	
 	public GroupCommuncation() {			
 		try {
@@ -66,9 +68,9 @@ public class GroupCommuncation {
 		private void handleMessage (Message message) {
 			if(message instanceof JoinMessage){
 				JoinMessage joinMessage = (JoinMessage) message;
-				friendList.add(((JoinMessage) message).getUsername());
+				friendList_.add(((JoinMessage) message).getUsername());
 				System.out.println("Friendlist contains");
-				for(String user : friendList){
+				for(String user : friendList_){
 					System.out.println(user);
 				}
 				if(joinMessageListener != null){
@@ -78,7 +80,7 @@ public class GroupCommuncation {
 			}
 			if(message instanceof LeaveMessage){
 				LeaveMessage leaveMessage = (LeaveMessage) message;
-				for(ListIterator<String> it = friendList.listIterator(); it.hasNext();){
+				for(ListIterator<String> it = friendList_.listIterator(); it.hasNext();){
 					String value = it.next();
 					if(value.equals(leaveMessage.getUsername())){
 						it.remove();
@@ -87,7 +89,7 @@ public class GroupCommuncation {
 				if(leaveMessageListener != null){
 					leaveMessageListener.onIncomingLeaveMessage(leaveMessage);
 				}
-				for(String user : friendList){
+				for(String user : friendList_){
 					System.out.println(user);
 				}
 
@@ -98,8 +100,22 @@ public class GroupCommuncation {
 				if(chatMessageListener != null){
 					chatMessageListener.onIncomingChatMessage(chatMessage);
 				}
-			} else {				
-				System.out.println("Unknown message type");
+			}
+			if(message instanceof FriendList){
+				if(friendListListener != null){
+					FriendList friendList = (FriendList) message;
+					System.out.println("Adding new user to list");
+					friendList_.add(((FriendList) message).getUsername());
+					System.out.println("All active users in chat");
+					for(String user : friendList_){
+						System.out.println(user);
+					}
+					friendListListener.onIncomingFriendListMessage(friendList);
+				}
+				else{
+					System.out.println("FriendListListener not running");
+				}
+
 			}
 
 		}		
@@ -141,10 +157,21 @@ public class GroupCommuncation {
 
 	}
 
-	public void setChatMessageListener(ChatMessageListener listener) {
-		this.chatMessageListener = listener;		
+	public void sendFriendListMessage(String username){
+		try{
+			FriendList currentUserMessage = new FriendList(username);
+			byte[] sendData = messageSerializer.serializeMessage(currentUserMessage);
+			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length,
+					InetAddress.getByName("255.255.255.255"), datagramSocketPort);
+			datagramSocket.send(sendPacket);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
 	}
+
+	public void setChatMessageListener(ChatMessageListener listener) {this.chatMessageListener = listener;}
 	public void setJoinMessageListener(JoinMessageListener listener) {this.joinMessageListener = listener; }
 	public void setLeavenMessageListener(LeaveMessageListener listener) {this.leaveMessageListener = listener; }
+	public void setFriendListListener(FriendListListener listener) {this.friendListListener = listener; }
 
 }
