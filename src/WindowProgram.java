@@ -123,7 +123,6 @@ public class WindowProgram implements ChatMessageListener, JoinMessageListener, 
 		}
 	}
 
-	
 	@Override
 	public void onIncomingChatMessage(ChatMessage chatMessage) {	
 		txtpnChat.setText(chatMessage.chat + "\n" + txtpnChat.getText());				
@@ -146,7 +145,6 @@ public class WindowProgram implements ChatMessageListener, JoinMessageListener, 
 			txtpnUsers.setText(user + "\n" + txtpnUsers.getText());
 		}
 	}
-
 	@Override
 	public void onIncomingLeaveMessage(LeaveMessage leaveMessage) {
 		txtpnChat.setText(leaveMessage.getLeaveMessage() + "\n" + txtpnChat.getText());

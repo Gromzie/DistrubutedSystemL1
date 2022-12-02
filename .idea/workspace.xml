@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2f1221ad-b181-44dd-8659-20cacb75a7fc" name="Changes" comment="L1 Done" />
+    <list default="true" id="2f1221ad-b181-44dd-8659-20cacb75a7fc" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/se/miun/distsys/messages/vector_clock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/WindowProgram.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/WindowProgram.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/se/miun/distsys/GroupCommuncation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/se/miun/distsys/GroupCommuncation.java" afterDir="false" />
+    </list>
     <list id="4f9cff6e-00f0-48ff-bc93-8451d07ac375" name="Changes by Oliver" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,17 +32,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "C:/Users/Max/Desktop/minimax-checkers-master",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Max\IdeaProjects\DistrubutedSystemL1\src" />
@@ -71,7 +77,7 @@
       <workItem from="1663768052504" duration="12862000" />
       <workItem from="1664179249542" duration="19389000" />
       <workItem from="1664536460000" duration="7912000" />
-      <workItem from="1664962598539" duration="576000" />
+      <workItem from="1667895802757" duration="1816000" />
     </task>
     <task id="LOCAL−00001" summary="New">
       <created>1663773079763</created>
@@ -91,14 +97,7 @@
       <option name="presentableId" value="LOCAL−00003" />
       <updated>1664188538484</updated>
     </task>
-    <task id="LOCAL-00004" summary="L1 Done">
-      <created>1664962719332</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1664962719332</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,7 +117,16 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="New" />
     <MESSAGE value="test" />
-    <MESSAGE value="L1 Done" />
-    <option name="LAST_COMMIT_MESSAGE" value="L1 Done" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
