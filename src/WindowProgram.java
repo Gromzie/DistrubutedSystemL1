@@ -3,14 +3,12 @@ import java.awt.*;
 import javax.swing.*;
 
 import se.miun.distsys.GroupCommuncation;
-import se.miun.distsys.listeners.ChatMessageListener;
-import se.miun.distsys.listeners.FriendListListener;
-import se.miun.distsys.listeners.JoinMessageListener;
-import se.miun.distsys.listeners.LeaveMessageListener;
+import se.miun.distsys.listeners.*;
 import se.miun.distsys.messages.ChatMessage;
 import se.miun.distsys.messages.FriendList;
 import se.miun.distsys.messages.JoinMessage;
 import se.miun.distsys.messages.LeaveMessage;
+import se.miun.distsys.messages.VecMessage;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +20,7 @@ import java.util.Scanner;
 
 //Skeleton code for Distributed systems
 
-public class WindowProgram implements ChatMessageListener, JoinMessageListener, LeaveMessageListener, FriendListListener, ActionListener {
+public class WindowProgram implements ChatMessageListener, JoinMessageListener, LeaveMessageListener, FriendListListener, ActionListener, Vector_clock_listener {
 
 	JFrame frame;
 
@@ -51,10 +49,12 @@ public class WindowProgram implements ChatMessageListener, JoinMessageListener, 
 		gc = new GroupCommuncation();
 
 		initializeUsername();
+
 		gc.setFriendListListener(null);
 		gc.setChatMessageListener(this);
 		gc.setJoinMessageListener(this);
 		gc.setLeavenMessageListener(this);
+
 		System.out.println("Group Communcation Started");
 	}
 
@@ -70,9 +70,10 @@ public class WindowProgram implements ChatMessageListener, JoinMessageListener, 
 				throw new RuntimeException(e);
 			}
 		}
+		gc.setVecMessageListener(this);
 		gc.setFriendListListener(this);
 		gc.sendJoinMessage(username);
-		System.out.println(username);
+		//System.out.println(username);
 		initializeChat();
 	}
 	private void initializeChat(){
@@ -160,4 +161,8 @@ public class WindowProgram implements ChatMessageListener, JoinMessageListener, 
 			txtpnUsers.setText(user + "\n" + txtpnUsers.getText());
 		}
 	}
+	@Override
+	public void onIncomingVecMessage(VecMessage vecMessage){
+	}
 }
+
